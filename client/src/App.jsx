@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import React from "react";
 import { useEffect, useMemo, useState } from 'react';
@@ -341,73 +342,179 @@ async function bookSeats() {
 
 {modal.mode === 'payment-success' && confirmedBooking && (
   <motion.div
-  className="simple-modal"
-  initial={{ opacity: 0, y: 35, scale: 0.96 }}
-  animate={{ opacity: 1, y: 0, scale: 1 }}
-  transition={{ duration: 0.55, ease: "easeOut" }}
->
-    <div style={{ textAlign: 'center', padding: '12px' }}>
-     <motion.div
-  initial={{ opacity: 0, scale: 0.4 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ delay: 0.15, duration: 0.4, type: "spring" }}
->
-  <Check size={48} color="#22c55e" />
-</motion.div>
+    className="simple-modal cinema-ticket-modal"
+    initial={{ opacity: 0, y: 35, scale: 0.96 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ duration: 0.55, ease: "easeOut" }}
+  >
+    <div className="ticket-success-heading">
+      <motion.div
+        className="ticket-check"
+        initial={{ opacity: 0, scale: 0.4 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.15, duration: 0.4, type: "spring" }}
+      >
+        <Check size={30} />
+      </motion.div>
+
       <motion.span
-  className="eyebrow"
-  initial={{ opacity: 0, y: 8 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.3, duration: 0.35 }}
->
+        className="eyebrow"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.35 }}
+      >
         PAYMENT SUCCESSFUL · DEMO
       </motion.span>
-      <h2>You're going to the movies!</h2>
-      <motion.p className="muted" initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.6, duration: 0.4 }}>
-        Your booking has been confirmed successfully.
+
+      <motion.h2
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45, duration: 0.4 }}
+      >
+        You're going to the movies!
+      </motion.h2>
+
+      <motion.p
+        className="muted"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.4 }}
+      >
+        Your booking is confirmed. Your movie night awaits.
       </motion.p>
     </div>
 
-    <div className="booking-row">
-      <div className="booking-thumb">
-        <Ticket />
-      </div>
-      <div className="booking-text">
-        <b>{selectedMovie?.title || 'Movie booking'}</b>
-        <span>Seats: {confirmedBooking.seats?.join(', ')}</span>
-        <span>Booking ID: {confirmedBooking._id}</span>
-        <span>Payment method: {paymentMethod}</span>
-        <small>Demo payment — no real money charged</small>
-      </div>
-      <div className="booking-end">
-        <b>{money(confirmedBooking.totalAmount)}</b>
-      </div>
-    </div>
-
-    <button
-      className="btn btn-primary full"
-      onClick={() => {
-        setModal(null);
-        setSelectedShow(null);
-        setSelectedMovie(null);
-        setConfirmedBooking(null);
-      }}
+    <motion.div
+      className="cinema-ticket"
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.55, duration: 0.5 }}
     >
-      Done
-    </button>
+      <div className="cinema-ticket-top">
+        <div className="ticket-brand">
+          <span className="ticket-brand-mark">
+            <Clapperboard size={19} />
+          </span>
+          <span>
+            i<span>Movies</span>
+            <small>YOUR CINEMA TICKET</small>
+          </span>
+        </div>
+        <span className="ticket-status">
+          <Check size={13} /> CONFIRMED
+        </span>
+      </div>
 
-    <button
-      className="btn btn-ghost full"
-      onClick={() => setModal({ mode: 'bookings' })}
+      <div className="ticket-movie">
+        <img
+          src={selectedMovie?.posterUrl || fallbackMovies[0].posterUrl}
+          alt={selectedMovie?.title || "Movie poster"}
+        />
+        <div className="ticket-movie-info">
+          <span className="ticket-label">NOW SHOWING</span>
+          <h3>{selectedMovie?.title || "Movie booking"}</h3>
+          <p>
+            {selectedMovie?.genre || "Cinema"} · {selectedMovie?.language || ""}
+          </p>
+          <div className="ticket-theatre">
+            <MapPin size={14} />
+            {selectedShow?.theatre?.name || "Cinema"}
+            {selectedShow?.theatre?.city ? ` · ${selectedShow.theatre.city}` : ""}
+          </div>
+        </div>
+      </div>
+
+      <div className="ticket-perforation">
+        <span />
+        <i />
+        <span />
+      </div>
+
+      <div className="ticket-details-grid">
+        <div>
+          <span className="ticket-label">DATE & TIME</span>
+          <b>
+            {selectedShow?.startsAt
+              ? new Date(selectedShow.startsAt).toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })
+              : "See booking history"}
+          </b>
+          <small>
+            {selectedShow?.startsAt
+              ? new Date(selectedShow.startsAt).toLocaleTimeString("en-IN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : ""}
+          </small>
+        </div>
+
+        <div>
+          <span className="ticket-label">YOUR SEATS</span>
+          <b>{confirmedBooking.seats?.join(", ") || "—"}</b>
+          <small>{confirmedBooking.seats?.length || 0} seat(s)</small>
+        </div>
+
+        <div>
+          <span className="ticket-label">PAYMENT METHOD</span>
+          <b>{paymentMethod}</b>
+          <small>Simulated payment</small>
+        </div>
+
+        <div>
+          <span className="ticket-label">TOTAL · DEMO</span>
+          <b className="ticket-total">{money(confirmedBooking.totalAmount)}</b>
+          <small>No real money charged</small>
+        </div>
+      </div>
+
+      <div className="ticket-bottom">
+        <div>
+          <span className="ticket-label">BOOKING REFERENCE</span>
+          <b className="ticket-reference">{confirmedBooking._id}</b>
+        </div>
+        <div className="ticket-barcode" aria-hidden="true">
+          {Array.from({ length: 31 }, (_, i) => (
+            <span key={i} />
+          ))}
+        </div>
+      </div>
+
+      <p className="ticket-disclaimer">
+        Keep your booking reference for your records. This is a student-project demo ticket.
+      </p>
+    </motion.div>
+
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.85, duration: 0.35 }}
     >
-      View my bookings
-    </button>
+      <button
+        className="btn btn-primary full ticket-action"
+        onClick={() => {
+          setModal(null);
+          setSelectedShow(null);
+          setSelectedMovie(null);
+          setConfirmedBooking(null);
+        }}
+      >
+        Done
+      </button>
+      <button
+        className="btn btn-ghost full"
+        onClick={() => setModal({ mode: "bookings" })}
+      >
+        View my bookings
+      </button>
+    </motion.div>
   </motion.div>
 )}
 
-     {modal.mode==='bookings' && <div className="simple-modal"><span className="eyebrow">YOUR CINEMA HISTORY</span><h2>My bookings</h2><p className="muted">Your reservations, all in one place.</p>{!bookings.length?<div className="empty-state">No bookings yet. Find a movie and book your seats to see them here.</div>:<div className="booking-list">{bookings.map(b=><div className="booking-row" key={b._id}><div className="booking-thumb"><Ticket/></div><div className="booking-text"><b>{b.show?.movie?.title || 'Movie booking'}</b><span>{b.seats.join(', ')} · {b.show?.theatre?.name || 'Cinema'}</span><span>{b.show?.startsAt?new Date(b.show.startsAt).toLocaleString():''}</span><small>{b.payment?.status==='simulated_success'?'Demo payment':'Cancelled/refunded demo'}</small></div><div className="booking-end"><b>{money(b.totalAmount)}</b><span className={b.status==='confirmed'?'status-confirmed':'status-cancelled'}>{b.status}</span>{b.status==='confirmed'&&<button onClick={()=>cancelBooking(b._id)}>Cancel</button>}</div></div>)}</div>}</div>}
+      {modal.mode==='bookings' && <div className="simple-modal"><span className="eyebrow">YOUR CINEMA HISTORY</span><h2>My bookings</h2><p className="muted">Your reservations, all in one place.</p>{!bookings.length?<div className="empty-state">No bookings yet. Find a movie and book your seats to see them here.</div>:<div className="booking-list">{bookings.map(b=><div className="booking-row" key={b._id}><div className="booking-thumb"><Ticket/></div><div className="booking-text"><b>{b.show?.movie?.title || 'Movie booking'}</b><span>{b.seats.join(', ')} · {b.show?.theatre?.name || 'Cinema'}</span><span>{b.show?.startsAt?new Date(b.show.startsAt).toLocaleString():''}</span><small>{b.payment?.status==='simulated_success'?'Demo payment':'Cancelled/refunded demo'}</small></div><div className="booking-end"><b>{money(b.totalAmount)}</b><span className={b.status==='confirmed'?'status-confirmed':'status-cancelled'}>{b.status}</span>{b.status==='confirmed'&&<button onClick={()=>cancelBooking(b._id)}>Cancel</button>}</div></div>)}</div>}</div>}
      {modal.mode === 'admin' && (
   <div className="simple-modal">
     <span className="eyebrow">ADMIN CONSOLE</span>
