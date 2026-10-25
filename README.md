@@ -1,3 +1,9 @@
+## 🎬 Project Demo
+
+Watch the iMovies movie-ticket-booking demo:[https://drive.google.com/file/d/1UnEYocOef5hwEGWAUhiVO7YFVNSUF59S/view?usp=sharing](https://drive.google.com/file/d/1UnEYocOef5hwEGWAUhiVO7YFVNSUF59S/view?usp=sharing)
+
+The demo showcases the movie browsing interface, seat selection, simulated payment flow, and booking confirmation ticket.
+
 # IMovies — MERN Movie Ticket Booking
 
 A MERN-stack starter built around the SkillWallet IMovies requirements.
