@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -339,14 +340,34 @@ async function bookSeats() {
 )}
 
 {modal.mode === 'payment-success' && confirmedBooking && (
-  <div className="simple-modal">
+  <motion.div
+  className="simple-modal"
+  initial={{ opacity: 0, y: 35, scale: 0.96 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  transition={{ duration: 0.55, ease: "easeOut" }}
+>
     <div style={{ textAlign: 'center', padding: '12px' }}>
-      <Check size={48} color="#22c55e" />
-      <span className="eyebrow">PAYMENT SUCCESSFUL · DEMO</span>
+     <motion.div
+  initial={{ opacity: 0, scale: 0.4 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ delay: 0.15, duration: 0.4, type: "spring" }}
+>
+  <Check size={48} color="#22c55e" />
+</motion.div>
+      <motion.span
+  className="eyebrow"
+  initial={{ opacity: 0, y: 8 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.3, duration: 0.35 }}
+>
+        PAYMENT SUCCESSFUL · DEMO
+      </motion.span>
       <h2>You're going to the movies!</h2>
-      <p className="muted">
+      <motion.p className="muted" initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.6, duration: 0.4 }}>
         Your booking has been confirmed successfully.
-      </p>
+      </motion.p>
     </div>
 
     <div className="booking-row">
@@ -383,7 +404,7 @@ async function bookSeats() {
     >
       View my bookings
     </button>
-  </div>
+  </motion.div>
 )}
 
      {modal.mode==='bookings' && <div className="simple-modal"><span className="eyebrow">YOUR CINEMA HISTORY</span><h2>My bookings</h2><p className="muted">Your reservations, all in one place.</p>{!bookings.length?<div className="empty-state">No bookings yet. Find a movie and book your seats to see them here.</div>:<div className="booking-list">{bookings.map(b=><div className="booking-row" key={b._id}><div className="booking-thumb"><Ticket/></div><div className="booking-text"><b>{b.show?.movie?.title || 'Movie booking'}</b><span>{b.seats.join(', ')} · {b.show?.theatre?.name || 'Cinema'}</span><span>{b.show?.startsAt?new Date(b.show.startsAt).toLocaleString():''}</span><small>{b.payment?.status==='simulated_success'?'Demo payment':'Cancelled/refunded demo'}</small></div><div className="booking-end"><b>{money(b.totalAmount)}</b><span className={b.status==='confirmed'?'status-confirmed':'status-cancelled'}>{b.status}</span>{b.status==='confirmed'&&<button onClick={()=>cancelBooking(b._id)}>Cancel</button>}</div></div>)}</div>}</div>}

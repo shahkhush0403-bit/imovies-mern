@@ -170,3 +170,71 @@
     height: 32px;
   }
 }
+
+/* iMovies — cinematic entrance animations */
+
+@keyframes cinemaFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes posterHover {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+.app {
+  animation: cinemaFadeUp 0.55s ease-out both;
+}
+
+.movie-card {
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(220, 38, 38, 0.18);
+}
+
+.movie-card img {
+  transition: transform 0.35s ease;
+}
+
+.movie-card:hover img {
+  transform: scale(1.04);
+}
+
+button {
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
