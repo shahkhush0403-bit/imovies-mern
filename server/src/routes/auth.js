@@ -5,7 +5,12 @@ import { User } from '../models.js';
 import { protect } from '../middleware/auth.js';
 
 const router = Router();
-const publicUser = user => ({ id: user._id, name: user.name, email: user.email, role: user.role });
+const publicUser = user => ({
+  id: user._id,
+  name: user.name,
+  email: user.email,
+  role: user.role?.trim()
+});
 function tokenFor(user) {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
